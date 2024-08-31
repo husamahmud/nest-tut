@@ -57,3 +57,14 @@ export class UsersController {
     return [{ id: 1, username: 'husam', email: 'husam@gmail' }];
   }
 }
+
+/**
+ * @Note:
+ * - getUser(@Param('id') id: ParseIntPipe) { ... } // ParseIntPipe will parse the id to integer
+ * - getUser(@Query('id') id: ParseBoolPipe) { ... } // ParseBoolPipe will parse the id to boolean
+ *    - http://localhost:3000/users/query?id=true // true
+ *    - http://localhost:3000/users/query?id=false // false
+ *    - http://localhost:3000/users/query?id=0 // validation error
+ *    - http://localhost:3000/users/query?id=1 // validation error
+ *    - http://localhost:3000/users/query?id=jfksa // validation error
+ **/
