@@ -1,5 +1,15 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { CreateUserDto } from '../../../common/dto/CreateUser.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+
+import { CreateUserDto } from '@/common/dto/CreateUser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -26,6 +36,7 @@ export class UsersController {
 
   //! Post request
   @Post('/create')
+  @UsePipes(new ValidationPipe())
   createUserPost(@Body() userData: CreateUserDto) {
     console.log(userData);
     return {};
