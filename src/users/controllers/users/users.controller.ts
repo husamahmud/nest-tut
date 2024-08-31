@@ -1,13 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateUserDto } from '../../../common/dto/CreateUser.dto';
 
 @Controller('users')
 export class UsersController {
+  // ! Route
   @Get()
   getUsers() {
     return [{ id: 1, username: 'husam', email: 'husam@gmail' }];
   }
 
+  // ! Nested Route
   @Get('/posts')
   getUserPosts() {
     return [
@@ -22,6 +24,13 @@ export class UsersController {
     ];
   }
 
+  //! Post request
+  @Post('/create')
+  createUserPost(@Body() userData: CreateUserDto) {
+    console.log(userData);
+    return {};
+  }
+
   //! Route params
   @Get(':id/:name')
   getUserById(@Param('id') id: string, @Param('name') name: string) {
@@ -30,9 +39,10 @@ export class UsersController {
     return { id, name };
   }
 
-  @Post('/create')
-  createUserPost(@Body() userData: CreateUserDto) {
-    console.log(userData);
-    return {};
+  //! Query params
+  @Get('query')
+  getUserByQuery(@Query('sortBy') sortBy: string) {
+    console.log('sortBy', sortBy);
+    return [{ id: 1, username: 'husam', email: 'husam@gmail' }];
   }
 }
