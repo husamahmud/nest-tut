@@ -5,18 +5,27 @@ import {
   Param,
   Post,
   Query,
+  Req,
+  Res,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { CreateUserDto } from '@/common/dto/CreateUser.dto';
+import { UsersService } from '@/users/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private userService: UsersService) {}
+
   // ! Route
   @Get()
-  getUsers() {
-    return [{ id: 1, username: 'husam', email: 'husam@gmail' }];
+  async getUsers(@Res() response: Response) {
+    // return [{ id: 1, username: 'husam', email: 'husam@gmail' }];
+
+    const users = await this.userService.fetchAll();
+    return response.status(200).json(users);
   }
 
   // ! Nested Route
