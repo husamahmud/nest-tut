@@ -4,8 +4,17 @@ import { CreateUserDto } from '@/common/dto/CreateUser.dto';
 
 @Injectable()
 export class UsersService {
+  private users = [
+    { username: 'husam', email: 'husam@gmail' },
+    { username: 'john', email: 'john@gmail' },
+  ];
+
   async fetchAll() {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    return await response.json();
+    return this.users;
+  }
+
+  async createUser(userData: CreateUserDto) {
+    this.users.push(userData);
+    return;
   }
 }

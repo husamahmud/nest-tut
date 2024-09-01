@@ -5,7 +5,6 @@ import {
   Param,
   Post,
   Query,
-  Req,
   Res,
   UsePipes,
   ValidationPipe,
@@ -48,7 +47,7 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   createUserPost(@Body() userData: CreateUserDto) {
     console.log(userData);
-    return {};
+    return this.userService.createUser(userData);
   }
 
   //! Route params
