@@ -2,13 +2,17 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
+  Param,
+  Patch,
   UsePipes,
+  HttpException,
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../common/dto/CreateUser.dto';
+import mongoose from 'mongoose';
+import { UpdateUserDto } from '../common/dto/UpdateUser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -26,7 +30,19 @@ export class UsersController {
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: string) {
-    return this.userService.getUserById(id);
+  async getUserById(@Param('id') id: string) {
+    const findUser = await this.userService.getUserById(id);
+    if (!findUser) throw new HttpException('User not found', 404);
+    return findUser;
+  }
+
+  @Patch(':id')
+  @UsePipes(new ValidationPipe())
+  async updateUserById(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const findUser = await this.userService.getUserById(id);
+    if (!findUser) throw new HttpException('User not found', 404);
   }
 }
