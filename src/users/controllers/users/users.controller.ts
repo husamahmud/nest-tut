@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,8 +15,10 @@ import { Response } from 'express';
 import { CreateUserDto } from '@/common/dto/CreateUser.dto';
 import { UsersService } from '@/users/services/users/users.service';
 import { ValidateCreateUserPipe } from '@/users/pipes/validate-create-user.pipe';
+import { AuthGuard } from '@/users/guards/auth/auth.guard';
 
 @Controller('users')
+// @UseGuards() // if you want to use guards for the whole controller
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -45,6 +48,7 @@ export class UsersController {
 
   //! Post request
   @Post('/create')
+  @UseGuards(AuthGuard) // if you want to use guards for a specific route
   @UsePipes(new ValidationPipe())
   createUser(@Body(ValidateCreateUserPipe) userData: CreateUserDto) {
     return this.userService.createUser(userData);
