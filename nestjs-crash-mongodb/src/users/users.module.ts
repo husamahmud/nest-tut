@@ -6,9 +6,14 @@ import {
 } from '@nestjs/common';
 import { UsersMiddleware } from './users.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '../schemas/User.schema';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+
+import { UsersService } from '@/users/users.service';
+import { User, UserSchema } from '@/schemas/User.schema';
+import { UsersController } from '@/users/users.controller';
+import {
+  UserSettings,
+  UserSettingsSchema,
+} from '@/schemas/UserSettings.schema';
 
 @Module({
   imports: [
@@ -16,6 +21,10 @@ import { UsersController } from './users.controller';
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: UserSettings.name,
+        schema: UserSettingsSchema,
       },
     ]),
   ],

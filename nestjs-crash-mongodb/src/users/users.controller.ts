@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
   Param,
   Patch,
   Post,
@@ -11,8 +10,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from '../common/dto/CreateUser.dto';
-import { UpdateUserDto } from '../common/dto/UpdateUser.dto';
+import { CreateUserDto } from '@/common/dto/CreateUser.dto';
+import { UpdateUserDto } from '@/common/dto/UpdateUser.dto';
 
 @Controller('users')
 export class UsersController {

@@ -1,7 +1,8 @@
+import mongoose from 'mongoose';
 import { HttpException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { UsersService } from './users.service';
+
+import { UsersService } from '@/users/users.service';
 
 @Injectable()
 export class UsersMiddleware implements NestMiddleware {
