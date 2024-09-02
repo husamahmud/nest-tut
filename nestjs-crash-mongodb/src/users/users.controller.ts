@@ -1,17 +1,17 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  Post,
+  HttpException,
   Param,
   Patch,
+  Post,
   UsePipes,
-  HttpException,
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../common/dto/CreateUser.dto';
-import mongoose from 'mongoose';
 import { UpdateUserDto } from '../common/dto/UpdateUser.dto';
 
 @Controller('users')
@@ -31,9 +31,7 @@ export class UsersController {
 
   @Get(':id')
   async getUserById(@Param('id') id: string) {
-    const findUser = await this.userService.getUserById(id);
-    if (!findUser) throw new HttpException('User not found', 404);
-    return findUser;
+    return this.userService.getUserById(id);
   }
 
   @Patch(':id')
@@ -42,7 +40,12 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    const findUser = await this.userService.getUserById(id);
-    if (!findUser) throw new HttpException('User not found', 404);
+    return this.userService.updateUserById(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @UsePipes(new ValidationPipe())
+  async deleteUserById(@Param('id') id: string) {
+    return this.userService.deleteUserById(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../schemas/User.schema';
 import { Model } from 'mongoose';
@@ -23,7 +23,17 @@ export class UsersService {
   }
 
   async updateUserById(id: string, updateUserDto: UpdateUserDto) {
+    const existingUser = await this.userModel.findById(id);
+    const isSameData = Object.keys(updateUserDto).every(
+      (key) => existingUser[key] === updateUserDto[key],
+    );
+    if (isSameData) throw new BadRequestException('No data changed');
+
     return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
-    //
+    // new: true returns the updated document instead of the original document
+  }
+
+  async deleteUserById(id: string) {
+    return this.userModel.findByIdAndDelete(id);
   }
 }
