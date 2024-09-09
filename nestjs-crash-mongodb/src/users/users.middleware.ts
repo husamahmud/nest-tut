@@ -6,8 +6,16 @@ import { UsersService } from '@/users/users.service';
 
 @Injectable()
 export class UsersMiddleware implements NestMiddleware {
+  /** Inject the UsersService to use its methods in the middleware **/
   constructor(private userService: UsersService) {}
 
+  /**
+   * @description Check if the user exists
+   * @param {Request} req - Request object
+   * @param {Response} res - Response object
+   * @param {NextFunction} next - Next function
+   * @returns {void}
+   **/
   async use(req: Request, res: Response, next: NextFunction) {
     const isValidId = mongoose.Types.ObjectId.isValid(req.params.id);
     const isExists = await this.userService.getUserById(req.params.id);
