@@ -5,6 +5,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateUserSettingsDto } from '@/common/dto/CreateUserSettings.dto';
+import { Type } from 'class-transformer';
 
 export class CreateUserDto {
   @IsString()
@@ -15,11 +16,12 @@ export class CreateUserDto {
   @IsNotEmpty()
   displayName: string;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   avatar?: string;
 
-  @ValidateNested()
   @IsOptional()
+  @ValidateNested()
+  @Type(() => CreateUserSettingsDto)
   settings?: CreateUserSettingsDto;
 }
