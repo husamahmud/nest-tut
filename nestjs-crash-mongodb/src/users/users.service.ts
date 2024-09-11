@@ -47,6 +47,7 @@ export class UsersService {
    * @description Get all users
    * @returns {Promise<User[]>} - List of users
    * use find method to get all users
+   * use populate method to get the user settings along with the user not just the ID of the settings
    **/
   async getUsers(): Promise<User[]> {
     return this.userModel.find().populate('settings');
