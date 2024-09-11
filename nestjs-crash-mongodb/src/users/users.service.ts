@@ -60,7 +60,7 @@ export class UsersService {
    * use populate method to get the user settings along with the user not just the ID of the settings
    **/
   async getUserById(id: string): Promise<User> {
-    return this.userModel.findById(id).populate('settings');
+    return this.userModel.findById(id).populate('settings').populate('posts');
   }
 
   /**
