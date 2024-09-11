@@ -49,7 +49,7 @@ export class UsersService {
    * use find method to get all users
    **/
   async getUsers(): Promise<User[]> {
-    return this.userModel.find();
+    return this.userModel.find().populate('settings');
   }
 
   /**
