@@ -11,21 +11,41 @@ export class UsersService {
    * Create a new user
    **/
   createUser(data: Prisma.UserCreateInput) {
-    return this.prisma.user.create({ data });
+    return this.prisma.user.create({
+      data: {
+        ...data,
+        userSetting: {
+          create: {
+            smsEnabled: false,
+            notificationsOn: false,
+          },
+        },
+      },
+    });
   }
 
   /**
-   * Get all users
+   * Get all users, Include userSetting
    **/
   getUsers() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({ include: { userSetting: true } });
   }
 
   /**
-   * Get a user by id
+   * Get a user by id, Include userSetting (smsEnabled, notificationsOn)
    **/
   getUserById(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        userSetting: {
+          select: {
+            smsEnabled: true,
+            notificationsOn: true,
+          },
+        },
+      },
+    });
   }
 
   /**
@@ -56,5 +76,19 @@ export class UsersService {
     }
 
     return this.prisma.user.update({ where: { id }, data });
+  }
+
+  /**
+   * Update a user's settings by id
+   **/
+  async updateUserSetting(userId: number, data: Prisma.UserSettingUpdateInput) {
+    const findUser = await this.getUserById(userId);
+    if (!findUser) throw new HttpException('User not found', 404);
+    if (!findUser.userSetting) throw new HttpException('Bad request', 400);
+
+    return this.prisma.userSetting.update({
+      where: { userId },
+      data,
+    });
   }
 }

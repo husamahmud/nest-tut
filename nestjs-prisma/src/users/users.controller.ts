@@ -15,6 +15,7 @@ import {
 import { UsersService } from '@/users/users.service';
 import { CreateUserDto } from '@/common/dto/createUser.dto';
 import { UpdateUserDto } from '@/common/dto/updateUser.dto';
+import { UpdateUserSettingsDto } from '@/common/dto/updateUserSettings.dto';
 
 @Controller('users')
 export class UsersController {
@@ -70,5 +71,13 @@ export class UsersController {
     @Body() data: UpdateUserDto,
   ) {
     return this.userService.updateUser(id, data);
+  }
+
+  @Patch(':id/settings')
+  async updateUserSettings(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateUserSettingsDto,
+  ) {
+    return this.userService.updateUserSetting(id, data);
   }
 }
