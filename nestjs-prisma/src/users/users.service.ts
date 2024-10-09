@@ -7,18 +7,40 @@ import { PrismaService } from '@/prisma/prisma.service';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * Create a new user
+   **/
   createUser(data: Prisma.UserCreateInput) {
     return this.prisma.user.create({ data });
   }
 
+  /**
+   * Get all users
+   **/
   getUsers() {
     return this.prisma.user.findMany();
   }
 
+  /**
+   * Get a user by id
+   **/
   getUserById(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  /**
+   * Delete a user by id
+   **/
+  async deleteUser(id: number) {
+    const findUser = await this.getUserById(id);
+    if (!findUser) throw new HttpException('User not found', 404);
+    return this.prisma.user.delete({ where: { id } });
+  }
+
+  /**
+   * Update a user by id
+   * if the username is provided, check if it is already taken
+   **/
   async updateUser(id: number, data: Prisma.UserUpdateInput) {
     const findUser = await this.getUserById(id);
     if (!findUser) throw new HttpException('User not found', 404);
